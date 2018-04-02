@@ -1,34 +1,67 @@
 defmodule Battlenet.Auth do
   alias Battlenet.Config
+  alias Battlenet.Auth.AccessToken
 
-  @doc """
-  Request for access tokens that you can then use with other APIs
-  """
-  def token() do
-    url = token_url() <> token_params()
+  @me __MODULE__
 
-    case HTTPoison.get(url) do
-      {:ok, %HTTPoison.Response{body: body}} ->
-        body
-        |> Poison.decode!()
-        |> Map.get("access_token")
-    end
+  # API
+
+  def start_link(_) do
+    GenServer.start_link(@me, nil, name: @me)
   end
 
   @doc """
-  Used to turn in an authorization code for access tokens that you can then use
+  Request access token that you can then use with other APIs
+  """
+  def token() do
+    GenServer.call(@me, :token)
+  end
+
+  @doc """
+  Turn in an authorization code for access tokens that you can then use
   with other APIs
   """
   def token(code) do
-    req_body = {:form, token_params(code)}
-    req_options = [hackney: [basic_auth: basic_auth_credentials()]]
+    GenServer.call(@me, {:token, code})
+  end
 
-    case HTTPoison.request(:post, token_url(), req_body, [], req_options) do
-      {:ok, %HTTPoison.Response{body: body}} ->
-        body
-        |> Poison.decode!()
-        |> Map.get("access_token")
+  @doc """
+  Clears any stored access token obtained using client credentials
+  """
+  def clear_token do
+    GenServer.cast(@me, :clear_token)
+  end
+
+  # Server Implementation
+
+  def init(_) do
+    {:ok, Battlenet.Auth.Stash.get_access_token()}
+  end
+
+  def handle_call(:token, _from, nil) do
+    token = request_token_with()
+    {:reply, token.access_token, token}
+  end
+
+  def handle_call(:token, _from, current_token) do
+    case AccessToken.is_valid?(current_token) do
+      true ->
+        {:reply, current_token.access_token, current_token}
+
+      false ->
+        with token <- request_token_with() do
+          {:reply, token.access_token, token}
+        end
     end
+  end
+
+  def handle_call({:token, code}, _from, current_token) do
+    token = request_token_with(code)
+    {:reply, token.access_token, current_token}
+  end
+
+  def handle_cast(:clear_token, _current_token) do
+    {:noreply, nil}
   end
 
   @doc """
@@ -37,6 +70,10 @@ defmodule Battlenet.Auth do
   """
   def authorize_url do
     "#{Config.site_url()}/oauth/authorize?#{authorize_params()}"
+  end
+
+  def terminate(_reason, access_token) do
+    Battlenet.Auth.Stash.update_access_token(access_token)
   end
 
   defp authorize_params do
@@ -56,4 +93,25 @@ defmodule Battlenet.Auth do
   end
 
   defp basic_auth_credentials, do: {Config.client_id(), Config.client_secret()}
+
+  defp request_token_with do
+    url = token_url() <> token_params()
+
+    case HTTPoison.get!(url) do
+      %HTTPoison.Response{body: body} ->
+        body
+        |> Poison.decode!(as: %AccessToken{})
+    end
+  end
+
+  defp request_token_with(code) do
+    req_body = {:form, token_params(code)}
+    req_options = [hackney: [basic_auth: basic_auth_credentials()]]
+
+    case HTTPoison.post!(token_url(), req_body, [], req_options) do
+      %HTTPoison.Response{body: body} ->
+        body
+        |> Poison.decode!(as: %AccessToken{})
+    end
+  end
 end

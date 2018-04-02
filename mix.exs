@@ -6,21 +6,32 @@ defmodule Battlenet.Mixfile do
   """
 
   def project do
-    [app: :battlenet,
-     version: "0.0.3",
-     elixir: "~> 1.1",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     description: @description,
-     package: package(),
-     deps: deps()]
+    [
+      app: :battlenet,
+      version: "0.0.3",
+      elixir: "~> 1.1",
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      description: @description,
+      aliases: [test: "test --no-start"],
+      package: package(),
+      deps: deps()
+    ]
   end
 
   # Configuration for the OTP application
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :httpoison]]
+    [
+      mod: {
+        Battlenet.Application, []
+      },
+      registered: [
+        Battlenet.Auth
+      ],
+      extra_applications: [:logger, :httpoison]
+    ]
   end
 
   # Dependencies can be Hex packages:
@@ -34,17 +45,18 @@ defmodule Battlenet.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:httpoison, "~> 0.8.0"},
-      {:poison, "~> 1.5"},
-
+      {:httpoison, "~> 1.0.0"},
+      {:poison, "~> 3.1"},
       {:ex_doc, "~> 0.14", only: :dev},
-      {:bypass, "~> 0.1", only: :test}
+      {:bypass, "~> 0.8", only: :test}
     ]
   end
 
   defp package do
-    [ maintainers: ["Daniel Grieve"],
+    [
+      maintainers: ["Daniel Grieve"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/danielgrieve/battlenet"}]
+      links: %{"GitHub" => "https://github.com/danielgrieve/battlenet"}
+    ]
   end
 end
