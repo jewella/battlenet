@@ -36,7 +36,7 @@ defmodule Battlenet.ConfigTest do
 
   defp clear_config do
     Application.get_all_env(:battlenet)
-    |> Dict.keys()
+    |> Keyword.keys()
     |> Enum.each(&(Application.delete_env(:battlenet, &1)))
   end
 

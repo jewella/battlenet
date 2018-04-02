@@ -3,6 +3,13 @@ defmodule Battlenet.AuthTest do
 
   @config Application.get_all_env(:battlenet)
 
+  setup do
+    bypass = Bypass.open
+    Application.put_env(:battlenet, :site_url, "http://localhost:#{bypass.port}")
+    context = %{bypass: bypass}
+    {:ok, context}
+  end
+
   test "authorize_url" do
     parsed_url = URI.parse(Battlenet.Auth.authorize_url)
 
@@ -12,10 +19,8 @@ defmodule Battlenet.AuthTest do
     assert query_param(parsed_url, "response_type") == "code"
   end
 
-  test "retrieving access token" do
-    bypass = Bypass.open
-
-    Bypass.expect bypass, fn conn ->
+  test "retrieving access token with authorization code server flow", context do
+    Bypass.expect context.bypass, fn conn ->
       assert conn.request_path == "/oauth/token"
       assert conn.method == "POST"
 
@@ -32,9 +37,18 @@ defmodule Battlenet.AuthTest do
       Plug.Conn.resp(conn, 200, "{\"access_token\": \"test-token\"}")
     end
 
-    Application.put_env(:battlenet, :site_url, "http://localhost:#{bypass.port}")
-    assert Battlenet.Auth.token("test-auth-code") == "test-token"
-    Application.delete_env(:battlenet, :site_url)
+    assert "test-token" == Battlenet.Auth.token("test-auth-code")
+  end
+
+  test "retrieving access token with client credential flow", context do
+    Bypass.expect context.bypass, fn conn ->
+      assert conn.request_path == "/oauth/token"
+      assert conn.method == "GET"
+
+      Plug.Conn.resp(conn, 200, "{\"access_token\": \"test-token\"}")
+    end
+
+    assert "test-token" == Battlenet.Auth.token()
   end
 
   defp basic_auth_credentials(conn) do
@@ -52,6 +66,6 @@ defmodule Battlenet.AuthTest do
     url
     |> Map.get(:query)
     |> URI.decode_query()
-    |> Dict.get(param)
+    |> Map.get(param)
   end
 end

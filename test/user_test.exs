@@ -20,7 +20,7 @@ defmodule Battlenet.UserTest do
     expected_user = %Battlenet.User{id: "user-id", battletag: "User#1234"}
 
     Application.put_env(:battlenet, :api_site_url, "http://localhost:#{bypass.port}")
-    Battlenet.User.with_token("a-token") == expected_user
+    assert Battlenet.User.with_token("a-token") == expected_user
     Application.delete_env(:battlenet, :api_site_url)
   end
 end
