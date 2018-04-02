@@ -1,6 +1,4 @@
 defmodule Battlenet.Auth do
-  use GenServer
-
   alias Battlenet.Config
 
   @doc """
