@@ -1,4 +1,6 @@
 defmodule Battlenet.Auth do
+  use GenServer
+
   alias Battlenet.Config
 
   @doc """
@@ -6,7 +8,7 @@ defmodule Battlenet.Auth do
   """
   def token() do
     url = token_url() <> token_params()
-    IO.puts url
+
     case HTTPoison.get(url) do
       {:ok, %HTTPoison.Response{body: body}} ->
         body
@@ -36,25 +38,24 @@ defmodule Battlenet.Auth do
   theirs, like a list of Diablo III characters.
   """
   def authorize_url do
-    "#{Config.site_url}/oauth/authorize?#{authorize_params()}"
+    "#{Config.site_url()}/oauth/authorize?#{authorize_params()}"
   end
 
   defp authorize_params do
-    "client_id=#{Config.client_id}&redirect_uri=#{Config.redirect_uri}&response_type=code"
+    "client_id=#{Config.client_id()}&redirect_uri=#{Config.redirect_uri()}&response_type=code"
   end
 
-  defp token_url, do: "#{Config.site_url}/oauth/token?"
+  defp token_url, do: "#{Config.site_url()}/oauth/token?"
 
   defp token_params do
-    "grant_type=client_credentials&client_id=#{Config.client_id}&client_secret=#{Config.client_secret}"
+    "grant_type=client_credentials&client_id=#{Config.client_id()}&client_secret=#{
+      Config.client_secret()
+    }"
   end
 
   defp token_params(code) do
-    [code: code,
-     grant_type: "authorization_code",
-     redirect_uri: Config.redirect_uri]
+    [code: code, grant_type: "authorization_code", redirect_uri: Config.redirect_uri()]
   end
 
-  defp basic_auth_credentials, do: {Config.client_id, Config.client_secret}
-
+  defp basic_auth_credentials, do: {Config.client_id(), Config.client_secret()}
 end
