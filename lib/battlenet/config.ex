@@ -15,5 +15,9 @@ defmodule Battlenet.Config do
     config()[:site_url] || "https://#{region()}.battle.net"
   end
 
+  def resource_url(path, access_token) do
+    "#{api_site_url()}/#{path}?access_token=#{access_token}"
+  end
+
   defp config, do: Application.get_all_env(:battlenet)
 end
