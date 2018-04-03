@@ -1,8 +1,6 @@
 defmodule Battlenet.Auth.Stash do
   use GenServer
 
-  alias Battlenet.Auth
-
   @me __MODULE__
 
   # API
@@ -25,7 +23,7 @@ defmodule Battlenet.Auth.Stash do
     {:ok, token}
   end
 
-  def handle_call({ :get }, _from, access_token) do
+  def handle_call({:get}, _from, access_token) do
     {:reply, access_token, access_token}
   end
 

@@ -1,10 +1,36 @@
 defmodule Battlenet.Auth.AccessToken do
+  @moduledoc """
+  Provides model for access token and functions for
+  verifying that the token is valid.
+  """
   @derive [Poison.Encoder]
 
   alias Battlenet.Config
 
   defstruct [:access_token, :token_type, :expires_in]
 
+  @doc """
+  Validates the access token string or struct
+
+  ## Parameters
+    
+    - access_token: the access token string or struct to be validated
+
+  ## Examples
+
+      iex(1)> token = Battlenet.Auth.token()
+      "zu5pu7ss3575nxe7zm4vupup"
+      iex(2)> Battlenet.Auth.AccessToken.is_valid?(token)
+      true
+      iex(3)> token_struct = %Battlenet.Auth.AccessToken{ access_token: token }
+      %Battlenet.Auth.AccessToken{
+        access_token: "u5pu7ss3575nxe7zm4vupup",
+        expires_in: nil,
+        token_type: nil
+      }
+      iex(4)> Battlenet.Auth.AccessToken.is_valid?(token_struct)
+      true
+  """
   def is_valid?(access_token) when is_binary(access_token) do
     is_valid?(%Battlenet.Auth.AccessToken{access_token: access_token})
   end

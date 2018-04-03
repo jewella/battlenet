@@ -1,4 +1,6 @@
 defmodule Battlenet.Auth do
+  use GenServer
+
   alias Battlenet.Config
   alias Battlenet.Auth.AccessToken
 
@@ -11,25 +13,71 @@ defmodule Battlenet.Auth do
   end
 
   @doc """
-  Request access token that you can then use with other APIs
+  Request access token that you can then use with other APIs. The token
+  is validated on each successive token request. The token is saved in a
+  separate process on process failure and fetched on re-initialization.
+  If a token is expired, or was created by a different client id, a new
+  token is fetched.
+
+  ## Example
+
+      iex> Battlenet.Auth.token()
+      "zevtpr9bt65g8dt4berkyp99"
   """
-  def token() do
+  def token do
     GenServer.call(@me, :token)
   end
 
   @doc """
   Turn in an authorization code for access tokens that you can then use
-  with other APIs
+  with other APIs.  This token is not persisted, and a new token will be
+  fetched on each call.
+
+  ## Parameters
+
+    - code: Authorization code that represents the user's agreement to
+    allow you data based on the scope.
+
+  ## Example
+
+      iex> Battlenet.Auth.token("123abc")
+      zevtpr9bt65g8dt4berkyp99"      
   """
   def token(code) do
     GenServer.call(@me, {:token, code})
   end
 
   @doc """
-  Clears any stored access token obtained using client credentials
+  Clears any stored access token obtained using client credentials.
+
+  ## Example
+
+      iex(1)> Battlenet.Auth.token()
+      "zevtpr9bt65g8dt4berkyp99"
+      iex(2)> Battlenet.Auth.clear_token()
+      :ok
+      iex(3)> Battlenet.Auth.token()
+      "eaf7dqe6t93sbfzh93v89kyr"
+
   """
   def clear_token do
     GenServer.cast(@me, :clear_token)
+  end
+
+  @doc """
+  Used to get player authorization for you to access certain resources of
+  theirs, like a list of World of Warcraft characters. For an authorization
+  code request, you need to either redirect the browser or open a new window
+  to this url.
+
+  ## Example
+
+      iex> Battlenet.Auth.authorize_url()
+      "https://US.battle.net/oauth/authorize?client_id=1234abcde
+      &redirect_uri=https://localhost.test/auth/callback&response_type=code"
+  """
+  def authorize_url do
+    "#{Config.site_url()}/oauth/authorize?#{authorize_params()}"
   end
 
   # Server Implementation
@@ -62,14 +110,6 @@ defmodule Battlenet.Auth do
 
   def handle_cast(:clear_token, _current_token) do
     {:noreply, nil}
-  end
-
-  @doc """
-  Used to get player authorization for you to access certain resources of
-  theirs, like a list of Diablo III characters.
-  """
-  def authorize_url do
-    "#{Config.site_url()}/oauth/authorize?#{authorize_params()}"
   end
 
   def terminate(_reason, access_token) do

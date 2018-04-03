@@ -1,13 +1,9 @@
 defmodule Battlenet.User do
   defstruct id: nil, battletag: nil
 
-  alias Battlenet.Config
+  alias Battlenet.Resource
 
   def with_token(access_token) do
-    case HTTPoison.get(Config.resource_url("account/user", access_token)) do
-      {:ok, %HTTPoison.Response{body: body}} ->
-        body
-        |> Poison.decode!(as: %Battlenet.User{})
-    end
+    Resource.get_with_token("account/user", access_token, %Battlenet.User{})
   end
 end
