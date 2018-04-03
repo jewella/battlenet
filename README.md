@@ -10,7 +10,7 @@ Add `battlenet` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:battlenet, "~> 0.0.2"}]
+  [{:battlenet, "~> 0.0.3"}]
 end
 ```
 
@@ -36,18 +36,23 @@ check into source control to provide your `client_id` and `client_secret`.
 # config.exs
 use Mix.Config
 
-config :battlenet,
-  redirect_uri: "your-redirect-uri", # required
-
-  api_site_url: "override", # optional, defaults to <region>.api.battle.net
-  region: "override", # optional, defaults to eu
-  site_url: "override" # optional, defaults to <region>.battle.net
-
-import_config "config.secret.exs"
+import_config "#{Mix.env}.exs"
 ```
 
 ```elixir
-# config.secret.exs
+# dev.exs
+use Mix.config
+
+config :battlenet,
+  redirect_uri: "https://localhost.test/auth/callback",
+  region: "US",
+  locale: "en_US"
+
+import_config "dev.secret.exs"
+```
+
+```elixir
+# dev.secret.exs
 use Mix.Config
 
 config :battlenet,
