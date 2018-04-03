@@ -1,4 +1,6 @@
 defmodule Battlenet.Auth.Stash do
+  @moduledoc false
+
   use GenServer
 
   @me __MODULE__

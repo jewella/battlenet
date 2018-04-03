@@ -1,4 +1,6 @@
 defmodule Battlenet.Config do
+  @moduledoc false
+
   def api_site_url do
     config()[:api_site_url] || "https://#{region()}.api.battle.net"
   end

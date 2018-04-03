@@ -1,4 +1,8 @@
 defmodule Battlenet.Auth do
+  @moduledoc """
+  Provides functions for retrieving access tokens and authorizing
+  OAuth clients using the Battlenet API.
+  """
   use GenServer
 
   alias Battlenet.Config
@@ -8,6 +12,7 @@ defmodule Battlenet.Auth do
 
   # API
 
+  @doc false
   def start_link(_) do
     GenServer.start_link(@me, nil, name: @me)
   end
@@ -82,15 +87,18 @@ defmodule Battlenet.Auth do
 
   # Server Implementation
 
+  @doc false
   def init(_) do
     {:ok, Battlenet.Auth.Stash.get_access_token()}
   end
 
+  @doc false
   def handle_call(:token, _from, nil) do
     token = request_token_with()
     {:reply, token.access_token, token}
   end
 
+  @doc false
   def handle_call(:token, _from, current_token) do
     case AccessToken.is_valid?(current_token) do
       true ->
@@ -103,15 +111,18 @@ defmodule Battlenet.Auth do
     end
   end
 
+  @doc false
   def handle_call({:token, code}, _from, current_token) do
     token = request_token_with(code)
     {:reply, token.access_token, current_token}
   end
 
+  @doc false
   def handle_cast(:clear_token, _current_token) do
     {:noreply, nil}
   end
 
+  @doc false
   def terminate(_reason, access_token) do
     Battlenet.Auth.Stash.update_access_token(access_token)
   end
