@@ -26,7 +26,7 @@ defmodule Battlenet.Auth do
 
   ## Example
 
-      iex> Battlenet.Auth.token()
+      Battlenet.Auth.token()
       "zevtpr9bt65g8dt4berkyp99"
   """
   def token do
@@ -45,7 +45,7 @@ defmodule Battlenet.Auth do
 
   ## Example
 
-      iex> Battlenet.Auth.token("123abc")
+      Battlenet.Auth.token("123abc")
       zevtpr9bt65g8dt4berkyp99"      
   """
   def token(code) do
@@ -57,11 +57,11 @@ defmodule Battlenet.Auth do
 
   ## Example
 
-      iex(1)> Battlenet.Auth.token()
+      Battlenet.Auth.token()
       "zevtpr9bt65g8dt4berkyp99"
-      iex(2)> Battlenet.Auth.clear_token()
+      Battlenet.Auth.clear_token()
       :ok
-      iex(3)> Battlenet.Auth.token()
+      Battlenet.Auth.token()
       "eaf7dqe6t93sbfzh93v89kyr"
 
   """
@@ -77,7 +77,7 @@ defmodule Battlenet.Auth do
 
   ## Example
 
-      iex> Battlenet.Auth.authorize_url()
+      Battlenet.Auth.authorize_url()
       "https://US.battle.net/oauth/authorize?client_id=1234abcde
       &redirect_uri=https://localhost.test/auth/callback&response_type=code"
   """
