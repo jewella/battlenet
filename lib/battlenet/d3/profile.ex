@@ -13,7 +13,8 @@ defmodule Battlenet.D3.Profile do
 
   ## Examples
 
-      iex> Battlenet.D3.Profile.get("Example#1234")
+      Battlenet.D3.Profile.get("Example#1234")
+      {:ok,
       %{
         "battleTag" => "Example#1234",
         "blacksmith" => %{"level" => 12, "slug" => "blacksmith"},

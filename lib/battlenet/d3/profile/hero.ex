@@ -14,7 +14,8 @@ defmodule Battlenet.D3.Profile.Hero do
 
   ## Example
 
-      iex> Battlenet.D3.Profile.Hero.get("Example#123", 123123)
+      Battlenet.D3.Profile.Hero.get("Example#123", 123123)
+      {:ok,
       %{
         "alive" => true,
         "class" => "wizard",

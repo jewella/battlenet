@@ -8,7 +8,7 @@
     <title>Battlenet.Resource – battlenet v0.0.3</title>
     <link rel="stylesheet" href="dist/app-480ffdc169.css" />
     
-    <script src="dist/sidebar_items-82bd721037.js"></script>
+    <script src="dist/sidebar_items-408ad76c77.js"></script>
     
     
     
@@ -110,6 +110,17 @@ fetched and stored access token</p>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#get/2">get(path, cast)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Retrieve information for the provided path and cast
+into provided map/struct using a fetched and stored
+access token</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#get_with_api_key/1">get_with_api_key(path)</a>
   </div>
   
@@ -123,14 +134,14 @@ an api key</p>
     <a href="#get_with_api_key/2">get_with_api_key(path, cast)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Retrieving information for the provided path using
+    <div class="summary-synopsis"><p>Retrieve information for the provided path using
 an api and casting into the provided map/struct</p>
 </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get_with_token/2">get_with_token(path, cast)</a>
+    <a href="#get_with_token/2">get_with_token(path, access_token)</a>
   </div>
   
     <div class="summary-synopsis"><p>Retrieve information for the provided path using
@@ -198,7 +209,8 @@ fetched and stored access token</p>
   Example
 </h2>
 
-<pre><code class="iex elixir">iex&gt; Battlenet.Resource.get(&quot;data/d3/season/&quot;)
+<pre><code class="elixir">Battlenet.Resource.get(&quot;data/d3/season/&quot;)
+{:ok,
 %{
   &quot;_links&quot; =&gt; %{
     &quot;self&quot; =&gt; %{
@@ -207,6 +219,37 @@ fetched and stored access token</p>
   },
   &quot;current_season&quot; =&gt; 13,
 ...</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="get/2">
+  
+  
+  <div class="detail-header">
+    <a href="#get/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <span class="signature">get(path, cast)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Retrieve information for the provided path and cast
+into provided map/struct using a fetched and stored
+access token.</p>
+<h2 id="get/2-parameters" class="section-heading">
+  <a href="#get/2-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parameters
+</h2>
+
+<ul>
+<li>path: the url path for the desired resource
+</li>
+<li>cast: a map or struct to cast the response as
+</li>
+</ul>
 
   </section>
 </div>
@@ -252,7 +295,7 @@ an api key.</p>
     
   </div>
   <section class="docstring">
-    <p>Retrieving information for the provided path using
+    <p>Retrieve information for the provided path using
 an api and casting into the provided map/struct</p>
 <h2 id="get_with_api_key/2-parameters" class="section-heading">
   <a href="#get_with_api_key/2-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
@@ -276,7 +319,7 @@ an api and casting into the provided map/struct</p>
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <span class="signature">get_with_token(path, cast)</span>
+    <span class="signature">get_with_token(path, access_token)</span>
     
     
     
@@ -322,7 +365,7 @@ provided access token into provided map/struct.</p>
 <ul>
 <li>path: the url path for the desired resource
 </li>
-<li>access_token: the access token string to use
+<li>access_token: the access token or acces token string string to use
 </li>
 <li>cast: a map or struct to cast the response as
 </li>

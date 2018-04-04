@@ -14,7 +14,8 @@ defmodule Battlenet.D3.Era.Leaderboard do
 
   ## Example
 
-      iex> Battlenet.D3.Era.Leaderboard.get(10, "rift-wizard")
+      Battlenet.D3.Era.Leaderboard.get(10, "rift-wizard")
+      {:ok,
       %{
         "_links" => %{
             "self" => %{

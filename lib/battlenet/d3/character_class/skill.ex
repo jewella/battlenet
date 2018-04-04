@@ -14,7 +14,8 @@ defmodule Battlenet.D3.CharacterClass.Skill do
 
   ## Example
 
-      iex> Battlenet.D3.CharacterClass.Skill.get("wizard", "audacity")
+      Battlenet.D3.CharacterClass.Skill.get("wizard", "audacity")
+      {:ok,
       %{
         "skill" => %{
           "description" => "You deal 30% additional damage to enemies within 15 yards.",

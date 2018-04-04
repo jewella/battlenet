@@ -14,7 +14,8 @@ defmodule Battlenet.D3.Season.Leaderboard do
 
   ## Examples
 
-      iex> Battlenet.D3.Season.Leaderboard.get(13, "rift-wizard")
+      Battlenet.D3.Season.Leaderboard.get(13, "rift-wizard")
+      {:ok,
       %{
           "_links" => %{
               "self" => %{

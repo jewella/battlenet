@@ -13,7 +13,8 @@ defmodule Battlenet.D3.Artisan do
 
   ## Examples
 
-      iex> Battlenet.D3.Artisan.get("blacksmith")
+      Battlenet.D3.Artisan.get("blacksmith")
+      {:ok,
       %{
         "slug" => "blacksmith",
         "name" => "Blacksmith",

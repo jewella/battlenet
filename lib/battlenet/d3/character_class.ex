@@ -14,7 +14,8 @@ defmodule Battlenet.D3.CharacterClass do
 
   ## Example
 
-      iex> Battlenet.D3.CharacterClass.get("wizard")
+      Battlenet.D3.CharacterClass.get("wizard")
+      {:ok,
       %{
         "femaleName" => "Wizard",
         "icon" => "wizard_female",

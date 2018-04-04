@@ -14,7 +14,8 @@ defmodule Battlenet.D3.Profile.Hero.Items do
 
   ## Example
 
-      iex> Battlenet.D3.Profile.Hero.Items.get("Example#123", 12341234)
+      Battlenet.D3.Profile.Hero.Items.get("Example#123", 12341234)
+      {:ok,
       %{
         "bracers" => %{
           "accountBound" => true,

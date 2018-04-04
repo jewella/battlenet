@@ -15,6 +15,7 @@ defmodule Battlenet.D3.Item do
   ## Examples
 
       iex> Battlenet.D3.Item.get("corrupted-ashbringer", "Unique_Sword_2H_104_x1")
+      {:ok,
       %{
         "accountBound" => true,
         "attributes" => %{

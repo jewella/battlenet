@@ -14,7 +14,8 @@ defmodule Battlenet.D3.Era do
 
   ## Example
   
-      iex> Battlenet.D3.Era.get(10)
+      Battlenet.D3.Era.get(10)
+      {:ok,
       %{
         "_links" => %{
           "self" => %{
@@ -37,7 +38,8 @@ defmodule Battlenet.D3.Era do
 
   ## Example
 
-      iex> Battlenet.D3.Era.index()
+      Battlenet.D3.Era.index()
+      {:ok,
       %{
         "_links" => %{
           "self" => %{

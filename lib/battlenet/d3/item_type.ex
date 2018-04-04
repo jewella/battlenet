@@ -13,7 +13,8 @@ defmodule Battlenet.D3.ItemType do
 
   ## Example
 
-      iex> Battlenet.D3.ItemType.get("sword2h")
+      Battlenet.D3.ItemType.get("sword2h")
+      {:ok,
       [
         %{
           "icon" => "sword_2h_101_demonhunter_male",
@@ -33,7 +34,8 @@ defmodule Battlenet.D3.ItemType do
 
   ## Example
 
-      iex> Battlenet.D3.ItemType.index()
+      Battlenet.D3.ItemType.index()
+      {:ok,
       [
         %{
           "id" => "Shoulders_Barbarian",

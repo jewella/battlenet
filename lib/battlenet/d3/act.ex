@@ -15,13 +15,15 @@ defmodule Battlenet.D3.Act do
   
   ## Examples
   
-      iex> Battlenet.D3.Act.get("act-ii")
+      Battlenet.D3.Act.get("act-ii")
+      {:ok,
       %{
         "name" => "Act II",
         "number" => 2,
         ...
 
-      iex> Battlenet.D3.Act.get("act-i")
+      Battlenet.D3.Act.get("act-i")
+      {:ok,
       %{
         "name" => "Act I",
         "number" => 1,
@@ -36,7 +38,8 @@ defmodule Battlenet.D3.Act do
 
   ## Examples
 
-      iex> Battlnet.D3.Act.index()
+      Battlnet.D3.Act.index()
+      {:ok,
       %{
         "acts" => [
           %{

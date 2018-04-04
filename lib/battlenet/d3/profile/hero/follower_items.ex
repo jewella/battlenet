@@ -14,7 +14,8 @@ defmodule Battlenet.D3.Profile.Hero.FollowerItems do
 
   ## Examples
 
-      iex> Battlenet.D3.Profile.Hero.FollowerItems.get("Example#123", 12341234)
+      Battlenet.D3.Profile.Hero.FollowerItems.get("Example#123", 12341234)
+      {:ok,
       %{
         "enchantress" => %{
           "mainHand" => %{

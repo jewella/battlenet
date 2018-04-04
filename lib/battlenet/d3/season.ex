@@ -13,7 +13,8 @@ defmodule Battlenet.D3.Season do
 
   ## Example
 
-      iex> Battlenet.D3.Season.get(13)
+      Battlenet.D3.Season.get(13)
+      {:ok,
       %{
         "_links" => %{
           "self" => %{
@@ -34,7 +35,8 @@ defmodule Battlenet.D3.Season do
 
   ## Example
 
-      iex> Battlenet.D3.Season.index()
+      Battlenet.D3.Season.index()
+      {:ok,
       %{
         "_links" => %{
           "self" => %{

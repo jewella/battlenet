@@ -13,7 +13,8 @@ defmodule Battlenet.D3.Follower do
 
   ## Example
 
-      iex> Battlenet.D3.Follower.get("templar")
+      Battlenet.D3.Follower.get("templar")
+      {:ok,
       %{
         "name" => "Templar",
         "portrait" => "templar",

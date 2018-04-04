@@ -8,7 +8,7 @@
     <title>Battlenet.D3.Act – battlenet v0.0.3</title>
     <link rel="stylesheet" href="dist/app-480ffdc169.css" />
     
-    <script src="dist/sidebar_items-82bd721037.js"></script>
+    <script src="dist/sidebar_items-408ad76c77.js"></script>
     
     
     
@@ -164,13 +164,15 @@
   Examples
 </h2>
 
-<pre><code class="iex elixir">iex&gt; Battlenet.D3.Act.get(&quot;act-ii&quot;)
+<pre><code class="elixir">Battlenet.D3.Act.get(&quot;act-ii&quot;)
+{:ok,
 %{
   &quot;name&quot; =&gt; &quot;Act II&quot;,
   &quot;number&quot; =&gt; 2,
   ...
 
-iex&gt; Battlenet.D3.Act.get(&quot;act-i&quot;)
+Battlenet.D3.Act.get(&quot;act-i&quot;)
+{:ok,
 %{
   &quot;name&quot; =&gt; &quot;Act I&quot;,
   &quot;number&quot; =&gt; 1,
@@ -198,7 +200,8 @@ iex&gt; Battlenet.D3.Act.get(&quot;act-i&quot;)
   Examples
 </h2>
 
-<pre><code class="iex elixir">iex&gt; Battlnet.D3.Act.index()
+<pre><code class="elixir">Battlnet.D3.Act.index()
+{:ok,
 %{
   &quot;acts&quot; =&gt; [
     %{

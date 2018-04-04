@@ -16,7 +16,8 @@ defmodule Battlenet.Resource do
 
   ## Example
 
-      iex> Battlenet.Resource.get("data/d3/season/")
+      Battlenet.Resource.get("data/d3/season/")
+      {:ok,
       %{
         "_links" => %{
           "self" => %{
@@ -40,7 +41,7 @@ defmodule Battlenet.Resource do
     - path: the url path for the desired resource
     - cast: a map or struct to cast the response as
   """
-  def get_with_token(path, cast) when is_map(cast) do
+  def get(path, cast) when is_map(cast) do
     get_with_token(path, Auth.token(), cast)
   end
 
@@ -54,11 +55,11 @@ defmodule Battlenet.Resource do
     - access_token: the access token string to use
   """
   def get_with_token(path, access_token) when is_binary(access_token) do
-    case HTTPoison.get(resource_url(path, access_token)) do
-      {:ok, %HTTPoison.Response{body: body}} ->
-        body
-        |> Poison.decode!()
-    end
+    get_with_token(path, access_token, %{})
+  end
+
+  def get_with_token(path, %Battlenet.Auth.AccessToken{access_token: access_token}) do
+    get_with_token(path, access_token, %{})
   end
 
   @doc """
@@ -66,17 +67,19 @@ defmodule Battlenet.Resource do
   provided access token into provided map/struct.
 
   ## Parameters
-  
+
     - path: the url path for the desired resource
-    - access_token: the access token string to use
+    - access_token: the access token or acces token string string to use
     - cast: a map or struct to cast the response as
   """
-  def get_with_token(path, access_token, cast) do
-    case HTTPoison.get(resource_url(path, access_token)) do
-      {:ok, %HTTPoison.Response{body: body}} ->
-        body
-        |> Poison.decode!(as: cast)
-    end
+  def get_with_token(path, %Battlenet.Auth.AccessToken{access_token: access_token}, cast) do
+    get_with_token(path, access_token, cast)
+  end
+
+  def get_with_token(path, access_token, cast) when is_binary(access_token) do
+    path
+    |> resource_url(access_token)
+    |> fetch(cast)
   end
 
   @doc """
@@ -88,15 +91,13 @@ defmodule Battlenet.Resource do
     - path: the url path for the desired resource
   """
   def get_with_api_key(path) do
-    case HTTPoison.get(apikey_resource_url(path)) do
-      {:ok, %HTTPoison.Response{body: body}} ->
-        body
-        |> Poison.decode!()
-    end
+    path
+    |> apikey_resource_url()
+    |> fetch()
   end
 
   @doc """
-  Retrieving information for the provided path using
+  Retrieve information for the provided path using
   an api and casting into the provided map/struct
 
   ## Parameters
@@ -105,11 +106,9 @@ defmodule Battlenet.Resource do
     - cast: a map or struct to cast the response as
   """
   def get_with_api_key(path, cast) do
-    case HTTPoison.get(apikey_resource_url(path)) do
-      {:ok, %HTTPoison.Response{body: body}} ->
-        body
-        |> Poison.decode!(as: cast)
-    end
+    path
+    |> apikey_resource_url()
+    |> fetch(cast)
   end
 
   defp resource_url(path, access_token) do
@@ -118,5 +117,35 @@ defmodule Battlenet.Resource do
 
   defp apikey_resource_url(path) do
     "#{Config.api_site_url()}/#{path}?locale=#{Config.locale()}&apikey=#{Config.client_id()}"
+  end
+
+  defp fetch(url, cast \\ %{}) do
+    case HTTPoison.get(url) do
+      {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
+        resource =
+          body
+          |> Poison.decode!(as: cast)
+
+        {:ok, resource}
+
+      {:ok, %HTTPoison.Response{body: body, status_code: 404}} ->
+        reason =
+          body
+          |> Poison.decode!()
+          |> Map.get(:reason, "The requested data could not be found.")
+
+        {:error,  reason}
+
+      {:ok, %HTTPoison.Response{body: body }} ->
+        reason =
+          body
+          |> Poison.decode!()
+          |> Map.get(:reason, "Battlenet service did not return a successful response.")
+
+        {:error,  reason}
+
+      {:error, reason} ->
+        {:error, reason}
+    end
   end
 end

@@ -14,7 +14,8 @@ defmodule Battlenet.D3.Artisan.Recipe do
 
   ## Example
 
-      iex> Battlenet.D3.Artisan.Recipe.get("blacksmith", "apprentice-flamberge")
+      Battlenet.D3.Artisan.Recipe.get("blacksmith", "apprentice-flamberge")
+      {:ok,
       %{
         "cost" => 1000,
         "id" => "Sword_2H_003",

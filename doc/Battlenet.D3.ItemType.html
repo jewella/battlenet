@@ -8,7 +8,7 @@
     <title>Battlenet.D3.ItemType – battlenet v0.0.3</title>
     <link rel="stylesheet" href="dist/app-480ffdc169.css" />
     
-    <script src="dist/sidebar_items-82bd721037.js"></script>
+    <script src="dist/sidebar_items-408ad76c77.js"></script>
     
     
     
@@ -164,7 +164,8 @@
   Example
 </h2>
 
-<pre><code class="iex elixir">iex&gt; Battlenet.D3.ItemType.get(&quot;sword2h&quot;)
+<pre><code class="elixir">Battlenet.D3.ItemType.get(&quot;sword2h&quot;)
+{:ok,
 [
   %{
     &quot;icon&quot; =&gt; &quot;sword_2h_101_demonhunter_male&quot;,
@@ -197,7 +198,8 @@
   Example
 </h2>
 
-<pre><code class="iex elixir">iex&gt; Battlenet.D3.ItemType.index()
+<pre><code class="elixir">Battlenet.D3.ItemType.index()
+{:ok,
 [
   %{
     &quot;id&quot; =&gt; &quot;Shoulders_Barbarian&quot;,
