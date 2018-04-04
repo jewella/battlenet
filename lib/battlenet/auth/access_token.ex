@@ -18,17 +18,17 @@ defmodule Battlenet.Auth.AccessToken do
 
   ## Examples
 
-      iex(1)> token = Battlenet.Auth.token()
+      iex> token = Battlenet.Auth.token()
       "zu5pu7ss3575nxe7zm4vupup"
-      iex(2)> Battlenet.Auth.AccessToken.is_valid?(token)
+      iex> Battlenet.Auth.AccessToken.is_valid?(token)
       true
-      iex(3)> token_struct = %Battlenet.Auth.AccessToken{ access_token: token }
+      iex> token_struct = %Battlenet.Auth.AccessToken{ access_token: token }
       %Battlenet.Auth.AccessToken{
         access_token: "u5pu7ss3575nxe7zm4vupup",
         expires_in: nil,
         token_type: nil
       }
-      iex(4)> Battlenet.Auth.AccessToken.is_valid?(token_struct)
+      iex> Battlenet.Auth.AccessToken.is_valid?(token_struct)
       true
   """
   def is_valid?(access_token) when is_binary(access_token) do
