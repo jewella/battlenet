@@ -120,7 +120,7 @@ defmodule Battlenet.Resource do
   end
 
   defp fetch(url, cast \\ %{}) do
-    case HTTPoison.get(url) do
+    case HTTPoison.get(url, [], [ ssl: [{:versions, [:'tlsv1.2']}] ]) do
       {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
         resource =
           body
